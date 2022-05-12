@@ -1,0 +1,67 @@
+---
+title: "Prova d'esame 2"
+author: "Propedo Demien 153260"
+date: "17/1/2022"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+new_diamonds = read.csv("C:/Users/Demie/Desktop/Demien/uniud/II anno/Statistica/laboratorio/Diamonds.csv")
+View(new_diamonds)
+
+summary(as.factor(new_diamonds$Color))
+barplot(table(as.factor(new_diamonds$Color)), xlab="Colore")
+```
+
+```{r}
+summary(new_diamonds$Size)
+boxplot(new_diamonds$Size, ylab="Prezzo")
+```
+
+```{r}
+boxplot(as.factor(new_diamonds$Color), xlab="Colore", ylab="Prezzo")
+```
+
+```{r}
+tapply(new_diamonds$Price, new_diamonds$Color, summary)
+```
+
+```{r}
+price_h = new_diamonds$Price[new_diamonds$Color=="H"]
+price_g = new_diamonds$Price[new_diamonds$Color=="G"]
+```
+
+```{r}
+qqnorm(price_h)
+qqline(price_h)
+```
+
+```{r}
+qqnorm(price_g)
+qqline(price_g)
+```
+
+```{r}
+library(moments)
+skewness(price_g)
+
+skewness(price_h)
+
+kurtosis(price_g)
+
+kurtosis(price_h)
+
+var.test(price_h, price_g)
+
+t.test(price_h, price_g, var.equal=T)
+```
+
+
+
+
+
+

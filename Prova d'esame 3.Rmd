@@ -1,0 +1,31 @@
+---
+title: "Prova d'esame 3"
+author: "Propedo Demien 153260"
+date: "18/1/2022"
+output: word_document
+
+---
+```{r}
+new_diamonds = read.csv("C:/Users/Demie/Desktop/Demien/uniud/II anno/Statistica/laboratorio/Diamonds.csv")
+View(new_diamonds)
+summary(new_diamonds$Price)
+boxplot(new_diamonds$Price)
+summary(as.factor(new_diamonds$Certification))
+barplot(table(as.factor(new_diamonds$Certification)))
+boxplot(new_diamonds$Price~new_diamonds$Certification)
+tapply(new_diamonds$Price,new_diamonds$Certification, summary)
+IGIlist= new_diamonds$Price[new_diamonds$Certification=="IGI"]
+HRDlist=new_diamonds$Price[new_diamonds$Certification=="HRD"]
+qqnorm(IGIlist)
+qqline(IGIlist)
+qqnorm(HRDlist)
+qqline(HRDlist)
+library(moments)
+skewness(IGIlist)
+kurtosis(IGIlist)
+skewness(HRDlist)
+kurtosis(HRDlist)
+var.test(HRDlist,IGIlist)
+t.test(HRDlist, IGIlist, var.equal = T)
+```
+

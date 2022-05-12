@@ -1,0 +1,78 @@
+---
+title: "Prova d'esame 1"
+author: "Propedo Demien 153260"
+date: "17/1/2022"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+new_diamonds = read.csv("C:/Users/Demie/Desktop/Demien/uniud/II anno/Statistica/laboratorio/Diamonds.csv")
+View(new_diamonds)
+summary(new_diamonds$Size) # media e mediana sono molto simili, quindi possiamo supporre che ci sia una buona simmetria
+par(mfor=c(1,2))
+hist(new_diamonds$Size, breaks=c(0,0.2,0.4,0.6,0.8,1,1.2), freq=F, main="Istogramma della dimensione")
+lines(density(new_diamonds$Size), col=2)
+boxplot(new_diamonds$Size) # osservando il grafico notiamo che c'è un buon equilibrio, le code sono circa della stessa lunghezza
+library(moments)
+skewness(new_diamonds$Size) # notiamo che il valore è prossimo allo zero ma positivo, quindi è presente una leggera asimmetria positiva
+kurtosis(new_diamonds$Size) # notiamo che il valore si discosta dal valore che dovremmo ottenere perchè sia normocurtica, in questo caso infatti si nota che è platicurtica quindi ci saranno dei valori che sono distanti dalla media
+```
+
+```{r}
+summary(new_diamonds$Price)
+boxplot(new_diamonds$Price) # osservando il grafico ci accorgiamo che il baffo superiore è molto più grande di quello inferiore, questo suggerisce che ci siano diversi valori fuori dalla "media" man man che si cresce
+skewness(new_diamonds$Price) # il valore della skewness infatti denota una certa asimmetria positiva decisamente più marcata di quella studiata in precedenza
+kurtosis(new_diamonds$Price) # il valore di curtosi, rispetto al caso positivo si avvicina maggiormente al valore "base" ma anche in questo caso si nota che è platicurtica
+```
+
+```{r}
+# Se le variabili sono normalmente distribuite, test di Pearson
+par(mfrow=c(1,2))
+qqnorm(new_diamonds$Size)
+qqline(new_diamonds$Size)
+
+qqnorm(new_diamonds$Price)
+qqline(new_diamonds$Price)
+# dai grafici notiamo che le variabili non sono normalmente distribuite, basta osservare i valori delle code. Procederemo quindi con il test di Spearman
+```
+
+```{r}
+plot(new_diamonds$Size, new_diamonds$Price) # notiamo come il prezzo sia notevolmente influenzato dall'aumentare delle dimensioni del diamante.
+```
+
+```{r}
+# test di correlazione di Spearman o Kendall
+cor.test(new_diamonds$Size, new_diamonds$Price, method="spearman") # notiamo che il rho è prossimo all'1, infatti c'è una grande correlazione tra le 2 variabili
+# usiamo spearman perchè le 2 variabili non sono distribuite normalmente, osservato grazie al test precedente che le variabili non sono normalmente distribuite
+```
+
+```{r}
+# se c'è correlazione proseguiamo con l'analisi della regressione
+mod = lm(Price~Size, data=new_diamonds)
+summary(mod) #notiamo che il p-value è molto piccolo, quindi c'è una relazione lineare tra le variabili
+plot(new_diamonds$Size, new_diamonds$Price, xlab="Dimensione", ylab="Prezzo")
+abline(mod, col=2)
+```
+
+```{r}
+plot(mod, which=1) # notiamo che i residui sono disposti in modo abbastanza omogeneo
+```
+
+```{r}
+plot(mod, which=2) # sembrerebbe seguire un modello normale fino al valore di x=2
+```
+
+```{r}
+plot(mod, which=4) # vedo se ci sono degli outliers, in questo caso notiamo che non ce ne sono.
+```
+
+
+
+
+
+
+
